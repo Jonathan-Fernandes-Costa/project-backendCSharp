@@ -89,9 +89,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAny");
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAny");
 app.UseAuthorization();
 
 app.MapControllers();

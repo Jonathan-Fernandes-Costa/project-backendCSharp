@@ -3,6 +3,7 @@ using System;
 using BibliotecaAPI.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BibliotecaAPI.Migrations
 {
     [DbContext(typeof(LivroContext))]
-    partial class LivroContextModelSnapshot : ModelSnapshot
+    [Migration("20231226124612_SeventhMigration")]
+    partial class SeventhMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +95,6 @@ namespace BibliotecaAPI.Migrations
                         .HasColumnType("text")
                         .HasColumnName("foto_path");
 
-                    b.Property<int?>("LivroCategoriaModelId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("QtdReservas")
                         .HasColumnType("integer")
                         .HasColumnName("qtd_reservas");
@@ -118,9 +118,7 @@ namespace BibliotecaAPI.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("LivroCategoriaModelId");
-
-                    b.HasIndex("livroCategoriaId");
+                    b.HasIndex("livro_categoria_id");
 
                     b.ToTable("Livros", t =>
                         {
@@ -160,15 +158,9 @@ namespace BibliotecaAPI.Migrations
 
             modelBuilder.Entity("BibliotecaAPI.Models.LivroModel", b =>
                 {
-                    b.HasOne("BibliotecaAPI.Models.LivroCategoriaModel", null)
-                        .WithMany("Livros")
-                        .HasForeignKey("LivroCategoriaModelId");
-
                     b.HasOne("BibliotecaAPI.Models.LivroCategoriaModel", "livroCategoria")
-                        .WithMany()
-                        .HasForeignKey("livroCategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Livros")
+                        .HasForeignKey("livro_categoria_id");
 
                     b.Navigation("livroCategoria");
                 });

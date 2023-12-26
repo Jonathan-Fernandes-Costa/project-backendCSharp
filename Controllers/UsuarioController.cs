@@ -10,6 +10,7 @@ using BibliotecaAPI.Models;
 using BibliotecaAPI.Repositories.Interfaces;
 using BibliotecaAPI.Repositories.Implementations;
 using BibliotecaAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BibliotecaAPI.Controllers
 {
@@ -91,24 +92,24 @@ namespace BibliotecaAPI.Controllers
             }
 
         }
+        [Authorize]
         [HttpGet("/api/sessao/validar")]
-        public ActionResult ValidaToken(string token)
+        public  ActionResult ValidaToken()
         {
+            var token = Request.Headers["Authorization"].ToString();
+            if (token.StartsWith("Bearer "))
+            {
+                token = token.Substring(7);
+            }
             try
             {
                 var tokenValidationService = HttpContext.RequestServices.GetRequiredService<TokenValidationService>();
-                if (tokenValidationService.ValidateToken(token))
-                {
-                    //var newToken = TokensService.GenerateToken();
-                    return Ok(token);
-                }
-                else
-                {
-                    return Unauthorized("Token inválido");
-                }
+                var response =  tokenValidationService.ValidateToken(token);
+
+                return Ok(response);
             }catch(Exception ex)
             {
-                return BadRequest("TESTE"+ex);
+                return BadRequest("Error ao validar Token "+ex);
             }
 
         }

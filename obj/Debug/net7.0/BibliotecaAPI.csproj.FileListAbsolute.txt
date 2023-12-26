@@ -240,3 +240,4 @@ C:\Users\jonathan\source\repos\BibliotecaAPI\BibliotecaAPI\bin\Debug\net7.0\Micr
 C:\Users\jonathan\source\repos\BibliotecaAPI\BibliotecaAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\jonathan\source\repos\BibliotecaAPI\BibliotecaAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\jonathan\source\repos\BibliotecaAPI\BibliotecaAPI\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\jonathan\source\repos\BibliotecaAPI\BibliotecaAPI\obj\Debug\net7.0\BibliotecaAPI.sourcelink.json

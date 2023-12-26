@@ -3,11 +3,18 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static BibliotecaAPI.Services.TokenValidationService;
 namespace BibliotecaAPI.Services
 {
     public class TokensService
     {
-        public static object GenerateToken(UsuarioModel usuario)
+        public class Token
+        {
+            public string token { get; set; } = string.Empty;
+        }
+
+
+        public static Token GenerateToken(UsuarioModel usuario)
         {
             var key = Encoding.ASCII.GetBytes(Key.key);
             var tokenConfig = new SecurityTokenDescriptor
@@ -15,8 +22,11 @@ namespace BibliotecaAPI.Services
                 Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
                 {
                     new Claim("UsuarioId", usuario.Id.ToString()),
+                    new Claim("UsuarioEmail", usuario.Email.ToString()),
+                    new Claim("UsuarioNome", usuario.Nome),
+                    new Claim("UsuarioPassword", usuario.Password),
                 }),
-                Expires = DateTime.UtcNow.AddHours(6),
+                Expires = DateTime.UtcNow.AddHours(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -24,7 +34,7 @@ namespace BibliotecaAPI.Services
             var token = tokenHandler.CreateToken(tokenConfig);
             var tokenString = tokenHandler.WriteToken(token);
 
-            return new
+            return new Token
             {
                 token = tokenString
             };

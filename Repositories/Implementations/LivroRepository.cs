@@ -22,9 +22,9 @@ namespace BibliotecaAPI.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<List<LivroModel>> GetLivrosAsync()
+        public async Task<List<LivroModel>> GetLivrosAsync(int pageSize, int currentPage)
         {
-            var livros = await _context.Livros.Include(x => x.livroCategoria).ToListAsync();
+            var livros = await _context.Livros.Include(x => x.livroCategoria).Skip(currentPage * pageSize).Take(pageSize).ToListAsync();
             return livros;
         }
         public async Task<LivroModel> GetLivroAsync(int id)

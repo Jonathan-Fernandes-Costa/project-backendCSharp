@@ -24,12 +24,17 @@ namespace BibliotecaAPI.Controllers
         }
 
         // GET: api/Livros
-        [HttpGet]
-        public async Task<ActionResult> GetLivros()
+        public class ListagemModel
+        {
+            public int PageSize { get; set; } 
+            public int CurrentPage { get; set; }
+        }
+        [HttpPost]
+        public async Task<ActionResult> GetLivros(ListagemModel listagem)
         {
             try
             {
-                var response = await _livroRepository.GetLivrosAsync();
+                var response = await _livroRepository.GetLivrosAsync(listagem.PageSize, listagem.CurrentPage);
                 return Ok(response);
             }catch (Exception ex) 
             {
@@ -68,7 +73,7 @@ namespace BibliotecaAPI.Controllers
 
         }
         // POST: api/Livros
-        [HttpPost]
+        [HttpPost("api/livros/cadastro")]
         public async Task<ActionResult<LivroModel>> PostLivro([FromForm] LivroModel livro)
         {
                 try
