@@ -11,6 +11,7 @@ using BibliotecaAPI.Repositories.Interfaces;
 using BibliotecaAPI.Repositories.Implementations;
 using BibliotecaAPI.Services;
 using Microsoft.AspNetCore.Authorization;
+using BibliotecaAPI.DTO;
 
 namespace BibliotecaAPI.Controllers
 {
@@ -67,13 +68,8 @@ namespace BibliotecaAPI.Controllers
                 return BadRequest(ex);
             }
         }
-        public class LoginModel
-        {
-            public string Email { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
         [HttpPost("/api/login")]
-        public async Task<ActionResult<UsuarioModel>> LoginUsuario(LoginModel login)
+        public async Task<ActionResult<UsuarioModel>> LoginUsuario(LoginDTO login)
         {
             try
             {

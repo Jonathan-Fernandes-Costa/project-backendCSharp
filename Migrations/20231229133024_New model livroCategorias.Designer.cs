@@ -3,6 +3,7 @@ using System;
 using BibliotecaAPI.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BibliotecaAPI.Migrations
 {
     [DbContext(typeof(LivroContext))]
-    partial class LivroContextModelSnapshot : ModelSnapshot
+    [Migration("20231229133024_New model livroCategorias")]
+    partial class NewmodellivroCategorias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,13 +66,9 @@ namespace BibliotecaAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("codigo");
 
-                    b.Property<DateTime>("DataCadastro")
+                    b.Property<DateTime>("DataUltimaAlteracao")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("data_cadastro");
-
-                    b.Property<DateTime>("DataEdicao")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("data_edicao");
+                        .HasColumnName("data_ultima_alteracao");
 
                     b.Property<string>("Editora")
                         .IsRequired()
@@ -103,15 +102,10 @@ namespace BibliotecaAPI.Migrations
                         .HasColumnType("text")
                         .HasColumnName("titulo");
 
-                    b.Property<string>("UsuarioCadastro")
+                    b.Property<string>("UsuarioUltimaAlteracao")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("usuario_cadastro");
-
-                    b.Property<string>("UsuarioEdicao")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("usuario_edicao");
+                        .HasColumnName("usuario_ultima_alteracao");
 
                     b.HasKey("id");
 

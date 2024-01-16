@@ -25,6 +25,8 @@ namespace BibliotecaAPI.Models
 
         [Column("ano_edicao")]
         public int AnoEdicao { get; set; }
+        [Column("sinopse")]
+        public string Sinopse {  get; set; } = string.Empty;
 
         [Column("qtd_reservas")]
         public int QtdReservas { get; set; }
@@ -32,13 +34,22 @@ namespace BibliotecaAPI.Models
         [Column("codigo")]
         public int Codigo { get; set; }
 
-        [Column("livro_categoria_id")]
-        public  int livroCategoriaId { get; set; }
+        [Column("id_livro_categoria")]
+        public  int LivroCategoriaId { get; set; }
+        public LivroCategoriaModel? LivroCategoria { get; set; }
 
-        [ForeignKey("livro_categoria_id")]
-        public  LivroCategoriaModel? livroCategoria { get; set; }
+        [Column("usuario_cadastro")]
+        public string UsuarioCadastro { get; set; } = string.Empty;
 
-        [JsonIgnore]
+        [Column("data_cadastro")]
+        public DateTime DataCadastro { get; set; }
+
+        [Column("usuario_edicao")]
+        public string UsuarioEdicao {  get; set; } = string.Empty;
+
+        [Column("data_edicao")]
+        public DateTime DataEdicao { get; set; }
+
         [Column("foto_path")]
         public string? FotoPath { get; set; }
 

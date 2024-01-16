@@ -31,6 +31,7 @@ namespace BibliotecaAPI.Repositories.Implementations
             UsuarioModel novoUser = new UsuarioModel();
             novoUser.Password = usuario.Password;
             novoUser.Email = usuario.Email;
+            novoUser.Nome = usuario.Nome;
 
             _context.Usuarios.Add(novoUser);
             await _context.SaveChangesAsync();

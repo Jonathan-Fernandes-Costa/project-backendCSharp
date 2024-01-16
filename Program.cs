@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<ILivroRepository, LivroRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ILivroCategoriasRepository, LivroCategoriasRepository>();
 builder.Services.AddDbContext<LivroContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConectionDBPostgres")));
 

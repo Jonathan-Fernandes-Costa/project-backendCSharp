@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BibliotecaAPI.Models;
 using BibliotecaAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-
+using BibliotecaAPI.DTO;
+using BibliotecaAPI.Services;
 namespace BibliotecaAPI.Controllers
 {
     [Authorize]
@@ -22,19 +23,13 @@ namespace BibliotecaAPI.Controllers
         {
             _livroRepository = livroRepository;
         }
-
         // GET: api/Livros
-        public class ListagemModel
-        {
-            public int PageSize { get; set; } 
-            public int CurrentPage { get; set; }
-        }
         [HttpPost]
-        public async Task<ActionResult> GetLivros(ListagemModel listagem)
+        public async Task<ActionResult> GetLivros(ListagemDTO listagem)
         {
             try
             {
-                var response = await _livroRepository.GetLivrosAsync(listagem.PageSize, listagem.CurrentPage);
+                var response = await _livroRepository.GetLivrosAsync(listagem);
                 return Ok(response);
             }catch (Exception ex) 
             {
@@ -61,22 +56,24 @@ namespace BibliotecaAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLivro(int id,[FromBody] LivroModel livro)
         {
+            
             try
             {
-                var response = await _livroRepository.PutLivroAsync(id, livro);
+                var response = await _livroRepository.PutLivroAsync(id, livro, GetUser());
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return NotFound(ex);
+                return NotFound(ex.Message);
             }
 
         }
         // POST: api/Livros
-        [HttpPost("api/livros/cadastro")]
-        public async Task<ActionResult<LivroModel>> PostLivro([FromForm] LivroModel livro)
+        [HttpPost("cadastro")]
+        public async Task<ActionResult<LivroModel>> PostLivro(LivroModel livro)
         {
-                try
+           
+            try
                 {
                     if (livro.Foto != null) {
                        var filePath = Path.Combine("Storage", livro.Foto.FileName); //Pegando o nome do arquivo
@@ -85,14 +82,28 @@ namespace BibliotecaAPI.Controllers
                             livro.Foto.CopyTo(fileStream);
                         }
                         livro.FotoPath = filePath;}
-                
+
                     
-                    var response  = await _livroRepository.PostLivroAsync(livro);
+                    var response  = await _livroRepository.PostLivroAsync(livro, GetUser());
                     return Ok(response);
                 }catch (Exception ex)
                 {
-                    return BadRequest(ex);
+                    return BadRequest(ex.Message);
                 }
+        }
+
+        private string GetUser()
+        {
+            
+                var token = Request.Headers["Authorization"].ToString();
+                if (token.StartsWith("Bearer "))
+                {
+                    token = token.Substring(7);
+                }
+                var tokenValidationService = HttpContext.RequestServices.GetRequiredService<TokenValidationService>();
+                var user = tokenValidationService.GetUsuarioToken(token);
+                return user;
+            
         }
 
         // DELETE: api/Livros/5
@@ -124,5 +135,9 @@ namespace BibliotecaAPI.Controllers
             }
             
         }
+
+       
     }
+
+
 }

@@ -9,12 +9,6 @@ namespace BibliotecaAPI.Services
 {
     public class TokenValidationService
     {
-        private readonly IUsuarioRepository _usuarioRepository;
-
-        public TokenValidationService(IUsuarioRepository usuarioRepository)
-        {
-            _usuarioRepository = usuarioRepository;
-        }
         public class TokenValidationResult
         {
             public bool Sucesso { get; set; }
@@ -132,6 +126,33 @@ namespace BibliotecaAPI.Services
             {
                 // Se houver qualquer exceção, o token é inválido
                 return null;
+            }
+
+        }
+        public string GetUsuarioToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Key.key);
+
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false  //validação expiração
+            };
+
+            var claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out _);
+            var nomeClaim = claimsPrincipal.FindFirst("UsuarioNome");
+            if(nomeClaim != null)
+            {
+                return nomeClaim.Value;
+            }
+            else
+            {
+                throw new Exception("Usuário que fez a alteração não encontrado");
             }
         }
     }

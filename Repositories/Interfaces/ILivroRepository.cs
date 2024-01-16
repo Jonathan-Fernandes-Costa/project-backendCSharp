@@ -1,13 +1,14 @@
-﻿using BibliotecaAPI.Models;
+﻿using BibliotecaAPI.DTO;
+using BibliotecaAPI.Models;
 
 namespace BibliotecaAPI.Repositories.Interfaces
 {
     public interface ILivroRepository
     {
-        public Task<List<LivroModel>> GetLivrosAsync(int pageSize, int currentPage);
+        public Task<object> GetLivrosAsync(ListagemDTO listagem);
         public Task<LivroModel> GetLivroAsync(int id);
-        public Task<int> PutLivroAsync(int id, LivroModel livro);
-        public Task<LivroModel> PostLivroAsync(LivroModel livro);
+        public Task<LivroModel> PutLivroAsync(int id, LivroModel livro, string user);
+        public Task<LivroModel> PostLivroAsync(LivroModel livro, string user);
         public Task DeleteLivroAsync(int id);
     }
 }
